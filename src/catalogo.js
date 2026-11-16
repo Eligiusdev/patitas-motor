@@ -94,10 +94,82 @@ function profundidad(categoria) {
     return 1 + profundidadMaxima;
 }
 
+function buscarServicio(categoria, nombre) {
+    for (const servicio of categoria.servicios) {
+        if (servicio.nombre === nombre) {
+            return servicio;
+        }
+    }
+
+    for (const subcategoria of categoria.subcategorias) {
+        const encontrado = buscarServicio(subcategoria, nombre);
+        if (encontrado !== null) {
+            return encontrado;
+        }
+    }
+
+    return null;
+}
+
+function rutaDeServicio(categoria, nombre) {
+    for (const servicio of categoria.servicios) {
+        if (servicio.nombre === nombre) {
+            return [categoria.nombre, servicio.nombre];
+        }
+    }
+
+    for (const subcategoria of categoria.subcategorias) {
+        const ruta = rutaDeServicio(subcategoria, nombre);
+        if (ruta !== null) {
+            return [categoria.nombre, ...ruta];
+        }
+    }
+
+    return null;
+}
+
+function sumarPrecios(categoria) {
+    let total = 0;
+
+    for (const servicio of categoria.servicios) {
+        total += servicio.precio;
+    }
+
+    for (const subcategoria of categoria.subcategorias) {
+        total += sumarPrecios(subcategoria);
+    }
+
+    return total;
+}
+
+function precioPaquete(categoria) {
+    return Math.round(sumarPrecios(categoria) * 0.9);
+}
+
+function serviciosEnRango(categoria, minimo, maximo) {
+    const encontrados = [];
+
+    for (const servicio of categoria.servicios) {
+        if (servicio.precio >= minimo && servicio.precio <= maximo) {
+            encontrados.push(servicio);
+        }
+    }
+
+    for (const subcategoria of categoria.subcategorias) {
+        encontrados.push(...serviciosEnRango(subcategoria, minimo, maximo));
+    }
+
+    return encontrados;
+}
+
 module.exports = {
     catalogo,
     catalogoOriginal,
     contarServicios,
     listarCatalogo,
     profundidad,
+    buscarServicio,
+    rutaDeServicio,
+    precioPaquete,
+    serviciosEnRango,
 };

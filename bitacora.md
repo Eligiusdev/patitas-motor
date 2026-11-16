@@ -294,3 +294,13 @@ contarServicios(Cirugías): servicios locales = 0
   contarServicios(Limpieza dental): 1 + 0 subcategorías = 1
 Combinar en Cirugías: 0 + 2 + 1 = 3 servicios
 ```
+
+## MiniReto 10: búsquedas, rutas y paquetes
+
+`buscarServicio` revisa primero los servicios locales y luego recorre subcategorías; al encontrar una coincidencia la devuelve inmediatamente y no visita las ramas restantes. `rutaDeServicio` añade el nombre de cada categoría al arreglo que retorna la llamada hija. `serviciosEnRango` combina los resultados locales con los de cada subcategoría.
+
+`precioPaquete` separa `sumarPrecios`, que acumula todo el árbol sin descuentos, de la función pública que aplica una sola vez el 10 %. Para Cirugías, el total sin descuento es $780.000 y el paquete correcto es **$702.000**.
+
+Error de descontar en cada llamada: Esterilización terminaría en $567.000 (90 % de $630.000) y Limpieza dental en $135.000 (90 % de $150.000); la raíz volvería a aplicar el 90 % a $702.000 y daría **$631.800**, un descuento efectivo de 19 % sobre el subtotal. El descuento debe aplicarse únicamente después de combinar todas las ramas.
+
+El rango inclusivo de $80.000 a $150.000 contiene cinco servicios: Consulta a domicilio, Dermatología, Cardiología, Con anestesia y Triple felina. `Fondo de ojo` cuesta $160.000 y queda fuera del rango.
