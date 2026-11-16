@@ -179,3 +179,48 @@ Complejidad de las operaciones:
 | Eliminar la primera | O(1), mueve cabeza | O(n), desplaza los elementos restantes |
 
 La lista enlazada facilita insertar al inicio y al final sin mover datos, pero no ofrece acceso directo por posición. Un arreglo permite ese acceso, pero insertar o eliminar al inicio requiere desplazar elementos.
+
+## Cola FIFO de recepción
+
+La cola guarda dos referencias: `frente` apunta al próximo turno y `final` al último. Después de encolar a Lola, Toby y Mía, y desencolar una vez:
+
+```text
+Antes de desencolar:
+frente                                  final
+  |                                       |
+  v                                       v
+[Lola | o] -> [Toby | o] ------------> [Mía | null]
+
+Sale Lola. Estado resultante:
+frente                   final
+  |                        |
+  v                        v
+[Toby | o] ------------> [Mía | null]
+```
+
+`encolar` enlaza el nuevo nodo desde `final`; `desencolar` mueve `frente` al siguiente nodo. Ambos actualizan referencias sin recorrer la cola.
+
+### Complejidad: cola enlazada y arreglo
+
+| Operacion | Cola enlazada | Arreglo |
+| --- | --- | --- |
+| Encolar | O(1) | `push`: O(1) amortizado |
+| Desencolar | O(1) | `shift`: O(n) |
+| Ver frente | O(1) | `arreglo[0]`: O(1) |
+| Consultar si esta vacia | O(1) | `length === 0`: O(1) |
+| Consultar tamanio | O(1) | `length`: O(1) |
+
+`shift()` desplaza las referencias restantes para cerrar el espacio del primer elemento. La cola enlazada solo mueve la referencia `frente`; por eso desencolar no depende de cuántos turnos esperan.
+
+### Medicion local de 100.000 turnos
+
+Medicion en este entorno con Node.js y `console.time` en `node pruebas/cola.js`:
+
+| Operacion (100.000 turnos) | Tiempo |
+| --- | ---: |
+| Cola enlazada: encolar | 89,45 ms |
+| Cola enlazada: desencolar | 8,472 ms |
+| Arreglo: `push` | 33,808 ms |
+| Arreglo: `shift` | 26,031 s |
+
+Es una medicion ilustrativa, no una garantia: los tiempos dependen de la máquina y de Node.js. El resultado muestra el costo acumulado de desplazar los elementos en `shift()`, mientras que el desencolado enlazado mueve solo una referencia.
