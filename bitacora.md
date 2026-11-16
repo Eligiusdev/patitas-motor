@@ -304,3 +304,20 @@ Combinar en Cirugías: 0 + 2 + 1 = 3 servicios
 Error de descontar en cada llamada: Esterilización terminaría en $567.000 (90 % de $630.000) y Limpieza dental en $135.000 (90 % de $150.000); la raíz volvería a aplicar el 90 % a $702.000 y daría **$631.800**, un descuento efectivo de 19 % sobre el subtotal. El descuento debe aplicarse únicamente después de combinar todas las ramas.
 
 El rango inclusivo de $80.000 a $150.000 contiene cinco servicios: Consulta a domicilio, Dermatología, Cardiología, Con anestesia y Triple felina. `Fondo de ojo` cuesta $160.000 y queda fuera del rango.
+
+## MiniReto 11: operaciones recursivas de la lista
+
+Las auxiliares recursivas reciben un nodo. Su caso base es `nodo === null`; la reducción avanza a `nodo.siguiente`.
+
+| Operacion | Iterativa: tiempo / memoria | Recursiva: tiempo / memoria |
+| --- | --- | --- |
+| Contar nodos | `obtenerTamanio`: O(1) / O(1), contador mantenido al insertar o borrar | O(n) / O(n), una llamada por nodo |
+| Sumar costos | O(n) / O(1) | O(n) / O(n), pila de llamadas |
+| Buscar por condición | O(n) / O(1) | O(n) / O(n), pila de llamadas |
+| Imprimir al revés | O(n) / O(n) si usa arreglo o pila auxiliar | O(n) / O(n) por la pila de llamadas |
+
+`imprimirAlReves` recorre primero recursivamente hasta `null`; al retornar, las llamadas pendientes se completan en orden inverso. Esa pila implícita de llamadas hace el trabajo de la pila explícita o del arreglo, aunque consume O(n) memoria.
+
+Las pruebas comparan tamaño, costo y búsqueda iterativos/recursivos en Lola ($275.000), Toby ($265.000) y Mía ($280.000), y verifican el orden inverso. Con una lista de 100.000 nodos, `obtenerTamanio()` devuelve 100.000, pero `tamanioRecursivo()` produce `RangeError: Maximum call stack size exceeded`: cada llamada ocupa memoria de pila y el límite del motor se alcanza antes de recorrer toda la lista.
+
+Decisión para el motor: conservar `obtenerTamanio()` (O(1) con contador), `costoTotal()` iterativo y `buscar()` iterativo como operaciones oficiales. Evitan consumo O(n) de pila y soportan historiales grandes; las versiones recursivas quedan como demostración. La impresión inversa recursiva se conserva como ejemplo didáctico para listas pequeñas.

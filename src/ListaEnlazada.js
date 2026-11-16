@@ -118,6 +118,74 @@ class ListaEnlazada {
         return datos;
     }
 
+    tamanioRecursivo() {
+        return this._tamanioRecursivo(this.cabeza);
+    }
+
+    _tamanioRecursivo(nodo) {
+        if (nodo === null) {
+            return 0;
+        }
+
+        return 1 + this._tamanioRecursivo(nodo.siguiente);
+    }
+
+    costoTotal() {
+        let total = 0;
+        this.recorrer((dato) => {
+            if (dato !== null && typeof dato === "object" && typeof dato.costo === "number") {
+                total += dato.costo;
+            }
+        });
+        return total;
+    }
+
+    costoTotalRecursivo() {
+        return this._costoTotalRecursivo(this.cabeza);
+    }
+
+    _costoTotalRecursivo(nodo) {
+        if (nodo === null) {
+            return 0;
+        }
+
+        const costo = nodo.dato !== null &&
+            typeof nodo.dato === "object" &&
+            typeof nodo.dato.costo === "number"
+            ? nodo.dato.costo
+            : 0;
+        return costo + this._costoTotalRecursivo(nodo.siguiente);
+    }
+
+    buscarRecursivo(condicion) {
+        return this._buscarRecursivo(this.cabeza, condicion);
+    }
+
+    _buscarRecursivo(nodo, condicion) {
+        if (nodo === null) {
+            return null;
+        }
+
+        if (condicion(nodo.dato)) {
+            return nodo.dato;
+        }
+
+        return this._buscarRecursivo(nodo.siguiente, condicion);
+    }
+
+    imprimirAlReves(imprimir = console.log) {
+        this._imprimirAlReves(this.cabeza, imprimir);
+    }
+
+    _imprimirAlReves(nodo, imprimir) {
+        if (nodo === null) {
+            return;
+        }
+
+        this._imprimirAlReves(nodo.siguiente, imprimir);
+        imprimir(nodo.dato);
+    }
+
     estaVacia() {
         return this.tamanio === 0;
     }
