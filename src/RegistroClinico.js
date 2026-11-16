@@ -16,6 +16,11 @@ class RegistroClinico {
         historial.agregarAlFinal(atencion);
     }
 
+    eliminarAtencion(mascota, condicion) {
+        const historial = this.obtenerHistorial(mascota);
+        return historial === null ? null : historial.eliminar(condicion);
+    }
+
     obtenerHistorial(mascota) {
         return this.historiales.get(mascota) || null;
     }

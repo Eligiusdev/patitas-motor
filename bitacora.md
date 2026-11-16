@@ -240,3 +240,22 @@ Se atiende durante 20 minutos por turno. El consultorio comienza libre a las 8:0
 | 10:00 | Nala es la siguiente consulta general | Nala | General | 80 min |
 
 Orden manual: **Toby, Luna, Kira, Rocky, Max, Simón, Nala**. El promedio de espera de urgencias es `(10 + 15 + 0) / 3 = 8,33 min`; el de generales es `(0 + 75 + 80 + 80) / 4 = 58,75 min`. No se detectó discrepancia entre la simulación por eventos y este cálculo; por lo tanto, no hubo síntoma, hipótesis ni corrección adicionales que documentar.
+
+## Pila y deshacer/rehacer
+
+Se eligió una pila enlazada con `Nodo`: `apilar` y `desapilar` solo cambian la referencia `tope` y son O(1), sin desplazar elementos ni redimensionar arreglos. `verTope`, `estaVacia` y `tamanio` también son O(1).
+
+La traza muestra el contenido de cada pila desde la base hasta el tope:
+
+| Paso | Accion | Historial de Lola | Pila deshacer | Pila rehacer |
+| ---: | --- | --- | --- | --- |
+| 1 | Agregar A | A | +A | vacia |
+| 2 | Agregar B | A, B | +A, +B | vacia |
+| 3 | Eliminar A | B | +A, +B, -A | vacia |
+| 4 | Deshacer | A, B | +A, +B | -A |
+| 5 | Deshacer | A | +A | -A, +B |
+| 6 | Rehacer | A, B | +A, +B | -A |
+| 7 | Agregar C | A, B, C | +A, +B, +C | vacia |
+| 8 | Rehacer | A, B, C | +A, +B, +C | vacia |
+
+Cada acción nueva borra la pila de rehacer. Por eso, después de agregar C, el último rehacer no modifica el historial.
