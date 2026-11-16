@@ -100,3 +100,66 @@ Despues: cabeza                         cola
 ```
 
 Las inserciones al inicio y al final son **O(1)**: usan las referencias `cabeza` y `cola` sin recorrer la lista. `recorrer` y `aArreglo` son **O(n)** porque visitan todos los nodos. `estaVacia` y `obtenerTamanio` son **O(1)**.
+
+## Eliminaciones y sus referencias
+
+En cada caso se busca con `anterior` y `actual`. Al borrar la cabeza, se mueve `cabeza` al segundo nodo y `cola` permanece igual:
+
+```text
+Antes:   cabeza                         cola
+            |                             |
+            v                             v
+          [A | o] -> [B | o] ----------> [C | null]
+
+Despues: cabeza                 cola
+            |                    |
+            v                    v
+          [B | o] ------------> [C | null]    tamanio -= 1
+```
+
+Al borrar un nodo intermedio, `anterior.siguiente` salta el nodo eliminado:
+
+```text
+Antes:   cabeza                         cola
+            |                             |
+            v                             v
+          [A | o] -> [B | o] ----------> [C | null]
+                       ^
+                   eliminado
+
+Despues: cabeza                 cola
+            |                    |
+            v                    v
+          [A | o] ------------> [C | null]    tamanio -= 1
+```
+
+Al borrar la cola, se busca el nodo anterior, se termina su enlace y se actualiza `cola`:
+
+```text
+Antes:   cabeza                         cola
+            |                             |
+            v                             v
+          [A | o] -> [B | o] ----------> [C | null]
+                                    anterior  eliminado
+
+Despues: cabeza          cola
+            |              |
+            v              v
+          [A | o] ------> [B | null]       tamanio -= 1
+```
+
+La lista guarda `siguiente`, pero no `anterior`. Por eso, aunque la cola ya se conoce, eliminarla requiere recorrer desde `cabeza` para encontrar el nodo previo: **O(n)**. Al eliminar cabeza, nodo intermedio, nodo único o un elemento inexistente, el tamaño y las referencias se ajustan; la cola siempre termina en `null`.
+
+Complejidad de las operaciones:
+
+| Operacion | Complejidad | Motivo |
+| --- | --- | --- |
+| `agregarAlFinal` | O(1) | Actualiza el nodo apuntado por `cola`. |
+| `agregarAlInicio` | O(1) | Actualiza `cabeza` sin recorrer. |
+| `recorrer` | O(n) | Visita cada nodo una vez. |
+| `aArreglo` | O(n) | Recorre todos los datos para copiarlos. |
+| `estaVacia` | O(1) | Consulta `tamanio`. |
+| `obtenerTamanio` | O(1) | Devuelve el contador. |
+| `buscar` | O(n) | En el peor caso revisa todos los nodos. |
+| `insertarDespuesDe` | O(n) | Busca el nodo; el enlace en sí es O(1). |
+| `eliminar` | O(n) | Busca el nodo y su anterior; actualizar enlaces es O(1). |

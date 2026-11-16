@@ -47,3 +47,79 @@ alFinal.recorrer((dato) => visitados.push(dato));
 assert.deepStrictEqual(visitados, ["A", "B", "C"], "recorrer debe visitar en orden");
 
 console.log("Pruebas basicas de ListaEnlazada: OK");
+
+assert.strictEqual(
+    alFinal.buscar((dato) => dato === "B"),
+    "B",
+    "buscar debe devolver el primer dato que cumple"
+);
+assert.strictEqual(alFinal.buscar((dato) => dato === "Z"), null, "buscar sin coincidencia");
+
+const insertarDespuesDeLaCola = new ListaEnlazada();
+insertarDespuesDeLaCola.agregarAlFinal("A");
+insertarDespuesDeLaCola.agregarAlFinal("B");
+assert.strictEqual(
+    insertarDespuesDeLaCola.insertarDespuesDe((dato) => dato === "B", "C"),
+    true,
+    "insertar despues de la cola"
+);
+verificarLista(insertarDespuesDeLaCola, ["A", "B", "C"], "cola actualizada al insertar");
+assert.strictEqual(insertarDespuesDeLaCola.cola.dato, "C");
+assert.strictEqual(
+    insertarDespuesDeLaCola.insertarDespuesDe((dato) => dato === "Z", "D"),
+    false,
+    "no insertar si no existe el nodo buscado"
+);
+verificarLista(insertarDespuesDeLaCola, ["A", "B", "C"], "insercion sin coincidencia");
+
+const eliminarDeVacia = new ListaEnlazada();
+assert.strictEqual(eliminarDeVacia.eliminar((dato) => dato === "A"), null, "eliminar en vacia");
+verificarLista(eliminarDeVacia, [], "lista vacia despues de eliminar");
+
+const eliminarUnico = new ListaEnlazada();
+eliminarUnico.agregarAlFinal("Unico");
+assert.strictEqual(
+    eliminarUnico.eliminar((dato) => dato === "Unico"),
+    "Unico",
+    "eliminar unico nodo"
+);
+verificarLista(eliminarUnico, [], "lista vacia despues de eliminar el unico");
+
+const eliminarCabeza = new ListaEnlazada();
+eliminarCabeza.agregarAlFinal("A");
+eliminarCabeza.agregarAlFinal("B");
+eliminarCabeza.agregarAlFinal("C");
+assert.strictEqual(eliminarCabeza.eliminar((dato) => dato === "A"), "A", "eliminar cabeza");
+verificarLista(eliminarCabeza, ["B", "C"], "referencias despues de eliminar cabeza");
+
+const eliminarIntermedio = new ListaEnlazada();
+eliminarIntermedio.agregarAlFinal("A");
+eliminarIntermedio.agregarAlFinal("B");
+eliminarIntermedio.agregarAlFinal("C");
+assert.strictEqual(
+    eliminarIntermedio.eliminar((dato) => dato === "B"),
+    "B",
+    "eliminar nodo intermedio"
+);
+verificarLista(eliminarIntermedio, ["A", "C"], "referencias despues de eliminar intermedio");
+
+const eliminarCola = new ListaEnlazada();
+eliminarCola.agregarAlFinal("A");
+eliminarCola.agregarAlFinal("B");
+eliminarCola.agregarAlFinal("C");
+assert.strictEqual(eliminarCola.eliminar((dato) => dato === "C"), "C", "eliminar cola");
+verificarLista(eliminarCola, ["A", "B"], "cola despues de eliminar");
+assert.strictEqual(eliminarCola.cola.dato, "B");
+assert.strictEqual(eliminarCola.cola.siguiente, null);
+
+const eliminarInexistente = new ListaEnlazada();
+eliminarInexistente.agregarAlFinal("A");
+eliminarInexistente.agregarAlFinal("B");
+assert.strictEqual(
+    eliminarInexistente.eliminar((dato) => dato === "Z"),
+    null,
+    "eliminar dato inexistente"
+);
+verificarLista(eliminarInexistente, ["A", "B"], "lista sin cambios al eliminar inexistente");
+
+console.log("Pruebas de busqueda, insercion y eliminacion: OK");
