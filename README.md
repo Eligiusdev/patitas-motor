@@ -1,28 +1,58 @@
-# Motor Patitas v0.2
+# Motor Patitas v1.0
 
-Motor de recepción e historiales clínicos de mascotas en JavaScript. La recepción prioriza urgencias, registra cada atención en una lista enlazada y permite deshacer o rehacer cambios.
+Motor de recepción e historiales clínicos para una clínica veterinaria. Integra listas enlazadas, colas FIFO, pilas LIFO, acciones reversibles, una recepción con prioridad de urgencias y un catálogo recursivo de servicios.
 
-## Estructuras
+## Requisitos
 
-- `Nodo`: dato de una atención y referencia al nodo siguiente.
-- `ListaEnlazada`: referencias a cabeza y cola, contador, inserciones, recorrido, búsqueda y eliminación.
-- `Cola`: turnos FIFO enlazados con referencias al frente y al final.
-- `Pila`: acciones LIFO para deshacer y rehacer.
-- `RegistroClinico`: un `Map` que relaciona el nombre de cada mascota con su lista de atenciones.
-- `Recepcion` y `Editor`: prioridad de urgencias e historial de acciones reversibles.
+- Node.js (no requiere instalar paquetes).
+- CommonJS (`require` y `module.exports`).
+
+## Organización
+
+- `src/estructuras/`: `Nodo`, `ListaEnlazada`, `Cola` y `Pila`.
+- `src/dominio/`: `RegistroClinico`, `Recepcion`, `Editor` y el catálogo.
+- `src/simulacion.js`: simulación de eventos de la mañana.
+- `src/reporte.js`: reporte de historiales de Lola, Toby y Mía.
+- `demo.js`: demostración integrada del motor.
+- `pruebas/`: pruebas de cada reto y verificación final.
 
 ## Ejecutar
 
-Desde la raíz del proyecto, con Node.js instalado:
+Desde la raíz:
 
 ```bash
-node pruebas/nodos.js
-node pruebas/lista.js
-node pruebas/cola.js
-node pruebas/recepcion.js
-node pruebas/editor.js
-node src/reporte.js
-node src/simulacion.js
+node demo.js
+node pruebas/todo.js
 ```
 
-`node pruebas/cola.js` también mide encolado/desencolado de 100.000 turnos frente a `push`/`shift`. `node src/simulacion.js` ejecuta la mañana del sábado, muestra horas y esperas, corrige una atención mal registrada mediante deshacer y presenta los historiales resultantes.
+La demostración contiene cinco secciones: catálogo, simulación priorizada, corrección con deshacer/rehacer, historiales finales y búsqueda/ruta/precio de paquete. Para explorar cada reto, también se pueden ejecutar `node src/simulacion.js`, `node src/reporte.js`, `node pruebas/cola.js`, `node pruebas/editor.js`, `node pruebas/catalogo.js` y `node pruebas/recursividad.js`. La prueba de cola incluye un benchmark de 100.000 turnos.
+
+## Estructuras y complejidad
+
+| Estructura | Operaciones principales | Complejidad |
+| --- | --- | --- |
+| `Nodo` | Leer/actualizar `dato` y `siguiente` | O(1) |
+| `ListaEnlazada` | Agregar al inicio/final; obtener tamaño | O(1) |
+| `ListaEnlazada` | Recorrer, costo total, buscar, insertar después y eliminar por condición | O(n) tiempo, O(1) memoria iterativa |
+| `ListaEnlazada` | Tamaño/costo/búsqueda recursivos; imprimir al revés | O(n) tiempo y O(n) pila de llamadas |
+| `Cola` | Encolar, desencolar, ver frente, vacío y tamaño | O(1) |
+| `Pila` | Apilar, desapilar, ver tope, vacío y tamaño | O(1) |
+| `RegistroClinico` | Obtener/crear historial con `Map` | O(1) promedio; agregar al final O(1) |
+| `RegistroClinico` | Eliminar atención por condición | O(n) |
+| `Recepcion` | Registrar llegada y llamar siguiente con prioridad | O(1) |
+| `Editor` | Agregar acción | O(1), salvo vaciar rehacer pendiente (O(r)) |
+| `Editor` | Eliminar, deshacer o rehacer acción en historial | O(n) en el peor caso |
+| Catálogo | Contar, listar, buscar, crear ruta o sumar paquete | O(N) tiempo, O(h) pila recursiva |
+| Catálogo | Filtrar servicios en rango | O(N) tiempo, O(h) pila recursiva + O(k) para los resultados |
+| Catálogo | Calcular profundidad | O(C) tiempo, O(h) pila recursiva |
+
+`n` es el número de atenciones, `r` el número de acciones que deban descartarse de rehacer, `N` los servicios/categorías visitados, `C` las categorías, `h` la profundidad máxima del catálogo y `k` los servicios que coinciden con el rango.
+
+## Clonar y verificar
+
+```bash
+git clone https://github.com/Eligiusdev/patitas-motor.git
+cd patitas-motor
+node demo.js
+node pruebas/todo.js
+```

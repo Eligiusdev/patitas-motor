@@ -1,5 +1,5 @@
 const assert = require("assert");
-const Cola = require("../src/Cola");
+const Cola = require("../src/estructuras/Cola");
 
 const turnos = [
     { mascota: "Lola", tutor: "Ana", horaLlegada: "08:00", motivo: "Vacunación" },

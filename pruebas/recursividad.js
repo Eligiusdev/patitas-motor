@@ -1,5 +1,5 @@
 const assert = require("assert");
-const ListaEnlazada = require("../src/ListaEnlazada");
+const ListaEnlazada = require("../src/estructuras/ListaEnlazada");
 
 function crearHistorial(atenciones) {
     const historial = new ListaEnlazada();

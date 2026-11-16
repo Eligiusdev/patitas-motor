@@ -9,7 +9,7 @@ const {
     rutaDeServicio,
     precioPaquete,
     serviciosEnRango,
-} = require("../src/catalogo");
+} = require("../src/dominio/catalogo");
 
 assert.strictEqual(contarServicios(catalogoOriginal), 9);
 assert.strictEqual(profundidad(catalogoOriginal), 3);
