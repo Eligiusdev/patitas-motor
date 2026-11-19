@@ -163,3 +163,19 @@ Complejidad de las operaciones:
 | `buscar` | O(n) | En el peor caso revisa todos los nodos. |
 | `insertarDespuesDe` | O(n) | Busca el nodo; el enlace en sí es O(1). |
 | `eliminar` | O(n) | Busca el nodo y su anterior; actualizar enlaces es O(1). |
+
+## Registro clínico y reporte v0.1
+
+`RegistroClinico` usa un `Map` cuya clave es el nombre de la mascota y cuyo valor es su `ListaEnlazada`. Registrar una atención obtiene o crea la lista y la agrega al final. El reporte recorre cada historial para imprimir atenciones, contar registros y sumar costos. La última vacunación se consulta con `buscar`; los datos de esta versión tienen como máximo una vacunación por mascota.
+
+### Lista enlazada frente a arreglo
+
+| Operacion | Lista enlazada con cabeza y cola | Arreglo dinamico |
+| --- | --- | --- |
+| Agregar al final | O(1) | O(1) amortizado; O(n) si debe redimensionarse |
+| Agregar al inicio | O(1) | O(n), desplaza los elementos existentes |
+| Acceder a la atencion k | O(n), recorre desde cabeza | O(1), acceso por indice |
+| Buscar un dato | O(n) | O(n) |
+| Eliminar la primera | O(1), mueve cabeza | O(n), desplaza los elementos restantes |
+
+La lista enlazada facilita insertar al inicio y al final sin mover datos, pero no ofrece acceso directo por posición. Un arreglo permite ese acceso, pero insertar o eliminar al inicio requiere desplazar elementos.
