@@ -21,7 +21,10 @@ for (const turno of turnos) {
 assert.strictEqual(cola.verFrente(), turnos[0]);
 assert.strictEqual(cola.tamanio(), turnos.length);
 
-const atendidos = [];
+const atendidos = [cola.desencolar()];
+assert.strictEqual(atendidos[0], turnos[0]);
+assert.strictEqual(cola.verFrente(), turnos[1], "verFrente avanza al siguiente turno");
+assert.strictEqual(cola.tamanio(), turnos.length - 1);
 while (!cola.estaVacia()) {
     atendidos.push(cola.desencolar());
 }

@@ -216,14 +216,14 @@ frente                   final
 
 Medicion en este entorno con Node.js y `console.time` en `node pruebas/cola.js`:
 
-| Operacion (100.000 turnos) | Tiempo |
-| --- | ---: |
-| Cola enlazada: encolar | 89,45 ms |
-| Cola enlazada: desencolar | 8,472 ms |
-| Arreglo: `push` | 33,808 ms |
-| Arreglo: `shift` | 26,031 s |
+| Operacion (100.000 turnos) | Primera ejecucion | Repeticion |
+| --- | ---: | ---: |
+| Cola enlazada: encolar | 89,45 ms | 96,695 ms |
+| Cola enlazada: desencolar | 8,472 ms | 8,869 ms |
+| Arreglo: `push` | 33,808 ms | 43,105 ms |
+| Arreglo: `shift` | 26,031 s | 2,428 s |
 
-Es una medicion ilustrativa, no una garantia: los tiempos dependen de la máquina y de Node.js. El resultado muestra el costo acumulado de desplazar los elementos en `shift()`, mientras que el desencolado enlazado mueve solo una referencia.
+Son mediciones ilustrativas, no una garantia: los tiempos variaron entre ejecuciones y dependen de la carga de la máquina y de Node.js. En ambas, `shift()` fue mucho más costoso que desencolar en la cola enlazada, porque desplaza elementos en lugar de mover una sola referencia.
 
 ## Recepción con prioridad: cálculo manual
 
@@ -259,3 +259,17 @@ La traza muestra el contenido de cada pila desde la base hasta el tope:
 | 8 | Rehacer | A, B, C | +A, +B, +C | vacia |
 
 Cada acción nueva borra la pila de rehacer. Por eso, después de agregar C, el último rehacer no modifica el historial.
+
+## Estructuras integradas en Motor Patitas v0.2
+
+| Estructura | Principio | Uso en Patitas | Complejidad principal |
+| --- | --- | --- | --- |
+| `Nodo` | Secuencial | Enlaza un dato con el siguiente nodo. | Leer o actualizar `siguiente`: O(1). |
+| `ListaEnlazada` | Secuencial | Historial de atenciones por mascota. | Insertar en extremos: O(1); buscar/eliminar por condición: O(n). |
+| `Cola` | FIFO | Espera de pacientes, por categoría. | Encolar/desencolar: O(1). |
+| `Pila` | LIFO | Historial de acciones de deshacer y rehacer. | Apilar/desapilar/ver tope: O(1). |
+| `RegistroClinico` | Índice por clave | Localiza la lista de cada mascota con un `Map`. | Obtener/crear historial: O(1) promedio; agregar al final: O(1). |
+| `Recepcion` | Prioridad + FIFO | Elige urgencias antes que generales y conserva el orden de cada cola. | Registrar llegada/llamar siguiente: O(1). |
+| `Editor` | Acciones reversibles con dos pilas | Corrige altas y eliminaciones en historiales. | Agregar: O(1) salvo limpiar rehacer; eliminar/deshacer/rehacer: O(n) cuando buscan en el historial. |
+
+En la simulación integrada, la atención equivocada de Toby se agrega primero al historial de Max, se revierte con `deshacer` y luego se registra correctamente en Toby. La comprobación final confirma siete atenciones en los historiales correspondientes. Si se llama a recepción con ambas colas vacías, se informa que la sala está vacía y se devuelve `null`.

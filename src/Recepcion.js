@@ -15,6 +15,11 @@ class Recepcion {
     }
 
     llamarSiguiente() {
+        if (this.estaVacia()) {
+            console.log("Sala vacía: no hay turnos para llamar.");
+            return null;
+        }
+
         if (!this.urgencias.estaVacia()) {
             return this.urgencias.desencolar();
         }
