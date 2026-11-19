@@ -224,3 +224,19 @@ Medicion en este entorno con Node.js y `console.time` en `node pruebas/cola.js`:
 | Arreglo: `shift` | 26,031 s |
 
 Es una medicion ilustrativa, no una garantia: los tiempos dependen de la máquina y de Node.js. El resultado muestra el costo acumulado de desplazar los elementos en `shift()`, mientras que el desencolado enlazado mueve solo una referencia.
+
+## Recepción con prioridad: cálculo manual
+
+Se atiende durante 20 minutos por turno. El consultorio comienza libre a las 8:00; solo se considera a quienes ya llegaron. Al quedar libre, se toma primero la urgencia más antigua; si no hay urgencias esperando, se toma la consulta general más antigua.
+
+| Inicio | Evento disponible al elegir | Turno elegido | Tipo | Espera |
+| --- | --- | --- | --- | ---: |
+| 8:00 | Toby llega | Toby | General | 0 min |
+| 8:20 | Max, Luna y Simón ya llegaron | Luna | Urgencia | 10 min |
+| 8:40 | Kira y Nala ya llegaron | Kira | Urgencia | 15 min |
+| 9:00 | Rocky llega al terminar Kira | Rocky | Urgencia | 0 min |
+| 9:20 | No quedan urgencias; Max espera desde 8:05 | Max | General | 75 min |
+| 9:40 | Simón es la siguiente consulta general | Simón | General | 80 min |
+| 10:00 | Nala es la siguiente consulta general | Nala | General | 80 min |
+
+Orden manual: **Toby, Luna, Kira, Rocky, Max, Simón, Nala**. El promedio de espera de urgencias es `(10 + 15 + 0) / 3 = 8,33 min`; el de generales es `(0 + 75 + 80 + 80) / 4 = 58,75 min`. No se detectó discrepancia entre la simulación por eventos y este cálculo; por lo tanto, no hubo síntoma, hipótesis ni corrección adicionales que documentar.
