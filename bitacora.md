@@ -281,7 +281,7 @@ Cada función desciende a las subcategorías hasta llegar a una categoría sin h
 | Funcion | Caso base | Reduccion | Combinacion |
 | --- | --- | --- | --- |
 | `contarServicios` | La categoria no tiene subcategorias; cuenta sus servicios. | Llama a la misma funcion para cada subcategoria. | Suma los servicios locales y los subtotales recibidos. |
-| `listarCatalogo` | No hay subcategorias que visitar; imprime categoria y servicios locales. | Llama para cada subcategoria con nivel + 1. | La sangria ` " ".repeat(nivel)` refleja el nivel de cada llamada. |
+| `listarCatalogo` | No hay subcategorias que visitar; imprime categoria y servicios locales. | Llama para cada subcategoria con nivel + 1. | La sangria `"  ".repeat(nivel)` refleja el nivel de cada llamada. |
 | `profundidad` | Sin subcategorias devuelve 1 (la categoria actual). | Calcula la profundidad de cada subcategoria. | Devuelve 1 + la profundidad maxima de las hijas. |
 
 El catálogo original tiene 9 servicios y profundidad 3. Se agregó `Oftalmología` dentro de `Consultas > Especializada`, con el servicio `Fondo de ojo` de $160.000: el catálogo extendido tiene 10 servicios y profundidad 4.
@@ -321,3 +321,20 @@ Las auxiliares recursivas reciben un nodo. Su caso base es `nodo === null`; la r
 Las pruebas comparan tamaño, costo y búsqueda iterativos/recursivos en Lola ($275.000), Toby ($265.000) y Mía ($280.000), y verifican el orden inverso. Con una lista de 100.000 nodos, `obtenerTamanio()` devuelve 100.000, pero `tamanioRecursivo()` produce `RangeError: Maximum call stack size exceeded`: cada llamada ocupa memoria de pila y el límite del motor se alcanza antes de recorrer toda la lista.
 
 Decisión para el motor: conservar `obtenerTamanio()` (O(1) con contador), `costoTotal()` iterativo y `buscar()` iterativo como operaciones oficiales. Evitan consumo O(n) de pila y soportan historiales grandes; las versiones recursivas quedan como demostración. La impresión inversa recursiva se conserva como ejemplo didáctico para listas pequeñas.
+
+## Cierre de la semana: 12 MiniRetos
+
+| MiniReto | Construcción | Estructura elegida y motivo |
+| ---: | --- | --- |
+| 1. La consulta cero | Nodo y recorrido manual | `Nodo` mantiene un dato y un enlace simple, base de las estructuras enlazadas. |
+| 2. El historial clínico como lista | Inserciones al inicio/final | `ListaEnlazada` con cabeza y cola para agregar en O(1). |
+| 3. Corregir el historial | Buscar, insertar y eliminar | Lista enlazada para correcciones con preservación de cabeza, cola y tamaño. |
+| 4. Patitas v0.1 | Historiales y reporte por mascota | `Map` de `RegistroClinico` más una lista por paciente. |
+| 5. La sala de espera | Encolar/desencolar FIFO | `Cola` enlazada para evitar el costo O(n) de `shift()`. |
+| 6. Urgencias primero | Prioridad y tiempos de atención | Dos colas FIFO: urgencias y generales. |
+| 7. Deshacer y rehacer | Acciones reversibles | Dos pilas LIFO, una para deshacer y otra para rehacer. |
+| 8. Patitas v0.2 | Simulación, historial y corrección | Composición de `Recepcion`, `Editor` y `RegistroClinico`. |
+| 9. El catálogo anidado | Conteo, listado y profundidad | Recursión sobre categorías de profundidad variable. |
+| 10. Rutas y paquetes | Buscar, filtrar y calcular descuentos | Recursión con retorno temprano y suma separada del descuento. |
+| 11. El historial recursivo | Conteo, costo, búsqueda y orden inverso | Iteración como opción oficial para listas grandes; recursión como demostración por su uso O(n) de pila. |
+| 12. Patitas v1.0 | Demo, pruebas y documentación | Módulos organizados por estructuras y dominio para facilitar mantenimiento. |

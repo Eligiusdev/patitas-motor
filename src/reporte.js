@@ -1,4 +1,4 @@
-const RegistroClinico = require("./RegistroClinico");
+const RegistroClinico = require("./dominio/RegistroClinico");
 
 const registro = new RegistroClinico();
 const atenciones = [

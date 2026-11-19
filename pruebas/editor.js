@@ -1,7 +1,7 @@
 const assert = require("assert");
-const Pila = require("../src/Pila");
-const Editor = require("../src/Editor");
-const RegistroClinico = require("../src/RegistroClinico");
+const Pila = require("../src/estructuras/Pila");
+const Editor = require("../src/dominio/Editor");
+const RegistroClinico = require("../src/dominio/RegistroClinico");
 
 function describirPila(pila) {
     const acciones = [];

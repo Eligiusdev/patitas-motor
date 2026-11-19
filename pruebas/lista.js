@@ -1,5 +1,5 @@
 const assert = require("assert");
-const ListaEnlazada = require("../src/ListaEnlazada");
+const ListaEnlazada = require("../src/estructuras/ListaEnlazada");
 
 function verificarLista(lista, datosEsperados, caso) {
     assert.deepStrictEqual(lista.aArreglo(), datosEsperados, caso);
