@@ -273,3 +273,24 @@ Cada acción nueva borra la pila de rehacer. Por eso, después de agregar C, el 
 | `Editor` | Acciones reversibles con dos pilas | Corrige altas y eliminaciones en historiales. | Agregar: O(1) salvo limpiar rehacer; eliminar/deshacer/rehacer: O(n) cuando buscan en el historial. |
 
 En la simulación integrada, la atención equivocada de Toby se agrega primero al historial de Max, se revierte con `deshacer` y luego se registra correctamente en Toby. La comprobación final confirma siete atenciones en los historiales correspondientes. Si se llama a recepción con ambas colas vacías, se informa que la sala está vacía y se devuelve `null`.
+
+## MiniReto 9: catálogo anidado
+
+Cada función desciende a las subcategorías hasta llegar a una categoría sin hijas (arreglo vacío): ese es el caso base. La reducción es procesar una subcategoría más pequeña; la combinación incorpora el resultado de esa llamada al resultado de la categoría actual.
+
+| Funcion | Caso base | Reduccion | Combinacion |
+| --- | --- | --- | --- |
+| `contarServicios` | La categoria no tiene subcategorias; cuenta sus servicios. | Llama a la misma funcion para cada subcategoria. | Suma los servicios locales y los subtotales recibidos. |
+| `listarCatalogo` | No hay subcategorias que visitar; imprime categoria y servicios locales. | Llama para cada subcategoria con nivel + 1. | La sangria ` " ".repeat(nivel)` refleja el nivel de cada llamada. |
+| `profundidad` | Sin subcategorias devuelve 1 (la categoria actual). | Calcula la profundidad de cada subcategoria. | Devuelve 1 + la profundidad maxima de las hijas. |
+
+El catálogo original tiene 9 servicios y profundidad 3. Se agregó `Oftalmología` dentro de `Consultas > Especializada`, con el servicio `Fondo de ojo` de $160.000: el catálogo extendido tiene 10 servicios y profundidad 4.
+
+### Traza de `contarServicios(Cirugías)`
+
+```text
+contarServicios(Cirugías): servicios locales = 0
+  contarServicios(Esterilización): 2 + 0 subcategorías = 2
+  contarServicios(Limpieza dental): 1 + 0 subcategorías = 1
+Combinar en Cirugías: 0 + 2 + 1 = 3 servicios
+```
